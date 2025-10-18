@@ -16,6 +16,15 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        externalNativeBuild {
+            cmake {
+                arguments.add("-DPLATFORM=Android")
+                arguments.add("-DBUILD_EXAMPLES=OFF")
+                arguments.add("-DAPP_LIB_NAME=native-lib")
+                arguments.add("-DGL_VERSION=0x00020000")
+            }
+        }
     }
 
     buildTypes {
@@ -36,6 +45,13 @@ android {
     }
     buildFeatures {
         compose = true
+    }
+    ndkVersion = "28.2.13676358"
+    externalNativeBuild {
+        cmake {
+		    path = file("src/main/cpp/CMakeLists.txt")
+            version = "4.1.2"
+        }
     }
 }
 
