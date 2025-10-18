@@ -39,9 +39,9 @@ if(CMAKE_BUILD_TYPE MATCHES "Debug")
     target_compile_definitions(${APP_LIB_NAME} PRIVATE _DEBUG DEBUG)
 endif()
 
-# Include raylib and ballbalancing header files
+# Include raylib and ball balancing project header files
 target_include_directories(${APP_LIB_NAME} PRIVATE "${CMAKE_SOURCE_DIR}/external/raylib")
-target_include_directories(${APP_LIB_NAME} PRIVATE "${CMAKE_SOURCE_DIR}/include/ballbalancing")
+target_include_directories(${APP_LIB_NAME} PRIVATE "${CMAKE_SOURCE_DIR}/include")
 
 # Link required libraries to the native application
 target_link_libraries(${APP_LIB_NAME} raylib)
