@@ -78,9 +78,11 @@ void BallBalancingGame::gamePlay(int level) {
         ball->move();
         /* Draw the objects */
         BeginDrawing();
+//        UpdateCamera(&camera, CAMERA_THIRD_PERSON);
         ClearBackground(BLACK);
         {
             BeginMode3D(*gameCamera->getCamera());
+//            BeginMode3D(camera);
             {
                 grid->draw();
                 ball->draw();

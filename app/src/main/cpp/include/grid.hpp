@@ -13,14 +13,18 @@ private:
     int row = 0; // Denotes Y Axis
     int col = 0; // Denotes X Axis
     int cellSz = 0;
-    std::vector<std::vector<int>> grid;
     Vector3 startPos;
     Vector3 endPos;
+    int xLimit, yLimit;
 public:
+    std::vector<std::vector<int>> grid;
     Grid();
     void designGrid();
     void draw();
     Vector3 getStartPos();
+    int getXLimit();
+    int getYLimit();
+    int getCellSz();
     ~Grid();
 };
 

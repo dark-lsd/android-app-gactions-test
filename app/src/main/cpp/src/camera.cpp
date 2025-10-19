@@ -32,7 +32,7 @@ void GameCamera::setupCamera(Vector3 initPosition) {
 
 void GameCamera::updateCamera(Vector3 updatedPosition) {
     LOGD("Updating Camera Positon and Target to x=%f, y=%f", updatedPosition.x, updatedPosition.y);
-    camera.position = { updatedPosition.x, updatedPosition.y, 1000.0f };
+    camera.position = { updatedPosition.x, updatedPosition.y, -1000.0f };
     camera.target = { updatedPosition.x, updatedPosition.y, 0.0f };
 }
 
