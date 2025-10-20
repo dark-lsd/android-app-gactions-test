@@ -46,7 +46,6 @@ jobs:
       - name: Publish the apk to Dropbox
         shell: bash
         run: |
-          ls app/build/outputs/apk/debug
           ls app/build/outputs/apk/release
           curl -X POST https://content.dropboxapi.com/2/files/upload \
             --header "Authorization: Bearer ${{ secrets.DROPBOX_ACCESS_TOKEN }}" \
