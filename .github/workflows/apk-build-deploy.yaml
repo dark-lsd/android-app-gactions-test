@@ -21,6 +21,15 @@ jobs:
         with:
           java-version: '21'
           distribution: 'oracle'
+      - name: Setup Android SDK # https://github.com/android-actions/setup-android
+        uses: android-actions/setup-android@v3
+      - name: Setup NDK
+        uses: nttld/setup-ndk@v1
+        with:
+          ndk-version: '28.2.13676358'
+          link-to-sdk: true
+        env:
+          ANDROID_NDK_HOME: ${{ steps.setup-ndk.outputs.ndk-path }}
       - name: Build and package the apk
         shell: bash
         run: |
