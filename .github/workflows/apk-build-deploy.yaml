@@ -1,0 +1,35 @@
+# Reference: https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax
+
+name: Android APK Build and Publish
+
+run-name: Workflow triggered by ${{ github.actor }}
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build-and-publish:
+    name: build and publish apk on dropbox
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout the repository to the github actions runner container
+        uses: actions/checkout@v5
+      - name: setup java 21
+        uses: actions/setup-java@v5
+        with:
+          java-version: '21'
+          distribution: 'oracle'
+      - name: Build and package the apk
+        shell: bash
+        run: |
+          ./gradlew assembleRelease
+      - name: Publish the apk to Dropbox
+        shell: bash
+        run: |
+          curl -X POST https://content.dropboxapi.com/2/files/upload \
+            --header "Authorization: Bearer ${{ secrets.DROPBOX_ACCESS_TOKEN }}" \
+            --header "Dropbox-API-Arg: {\"autorename\":false,\"mode\":\"overwrite\",\"mute\":false,\"path\":\"/ball-balancing-game.apk\",\"strict_conflict\":false}" \
+            --header "Content-Type: application/octet-stream" \
+            --data-binary @app/build/outputs/apk/release/app-release-unsigned.apk
