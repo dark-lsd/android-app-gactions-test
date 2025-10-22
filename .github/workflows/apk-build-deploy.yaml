@@ -42,13 +42,32 @@ jobs:
       - name: Build and package the apk
         shell: bash
         run: |
-          ./gradlew assembleDebug
+          ./gradlew assembleRelease
+      - name: Sign and Verfiy the Release APK Package using apksigner
+        env:
+          KEYSTORE_PASSWD: ${{secrets.KEYSTORE_PASSWD }}
+          KEYSTORE_ALIAS: ${{ secrets.KEYSTORE_ALIAS }}
+        run: |
+          echo "${{ secrets.KEYSTORE_JKS }}" | base64 --decode > keystore.jks
+          echo "Signing the APK"
+          $(find $HOME/.android/sdk/build-tools -type f -name apksigner | head -n 1) \
+                    --ks keystore.jks \
+                    --ks-key-alias "$KEYSTORE_ALIAS" \
+                    --ks-pass "$KEYSTORE_PASSWD" \
+                    --out app/build/outputs/apk/release/app-release-signed.apk 
+                    app/build/outputs/apk/release/app-release-unsigned.apk
+          echo "Verify the signed package"
+          $(find $HOME/.android/sdk/build-tools -type f -name apksigner | head -n 1) \
+                    --verbose \
+                    verify \
+                    app/build/outputs/apk/release/app-release-signed.apk
+          echo "Debug print files"
+          find app/build/outputs/
       - name: Publish the apk to Dropbox
         shell: bash
         run: |
-          find app/build/
           curl -X POST https://content.dropboxapi.com/2/files/upload \
             --header "Authorization: Bearer ${{ secrets.DROPBOX_ACCESS_TOKEN }}" \
             --header "Dropbox-API-Arg: {\"autorename\":false,\"mode\":\"overwrite\",\"mute\":false,\"path\":\"/ball-balancing-game.apk\",\"strict_conflict\":false}" \
             --header "Content-Type: application/octet-stream" \
-            --data-binary @app/build/outputs/apk/debug/app-debug.apk
+            --data-binary @app/build/outputs/apk/release/app-release-signed.apk
