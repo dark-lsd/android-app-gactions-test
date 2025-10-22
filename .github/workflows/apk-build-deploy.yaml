@@ -51,18 +51,11 @@ jobs:
           echo "${{ secrets.KEYSTORE_JKS }}" | base64 --decode > keystore.jks
           echo "Signing the APK"
           echo "$ANDROID_SDK_ROOT"
-          find $ANDROID_SDK_ROOT/build-tools/
-          $(find $ANDROID_SDK_ROOT/build-tools -type f -name apksigner | head -n 1) \
-                    --ks keystore.jks \
-                    --ks-key-alias "$KEYSTORE_ALIAS" \
-                    --ks-pass "$KEYSTORE_PASSWD" \
-                    --out app/build/outputs/apk/release/app-release-signed.apk 
-                    app/build/outputs/apk/release/app-release-unsigned.apk
+          $(find $ANDROID_SDK_ROOT/build-tools -type f -name apksigner | tail -n 1) version
+          $(find $ANDROID_SDK_ROOT/build-tools -type f -name apksigner | tail -n 1) help
+          $(find $ANDROID_SDK_ROOT/build-tools -type f -name apksigner | tail -n 1) --ks-key-alias "$KEYSTORE_ALIAS" --ks keystore.jks --ks-pass "$KEYSTORE_PASSWD" --out app/build/outputs/apk/release/app-release-signed.apk app/build/outputs/apk/release/app-release-unsigned.apk
           echo "Verify the signed package"
-          $(find $ANDROID_SDK_ROOT/build-tools -type f -name apksigner | head -n 1) \
-                    --verbose \
-                    verify \
-                    app/build/outputs/apk/release/app-release-signed.apk
+          $(find $ANDROID_SDK_ROOT/build-tools -type f -name apksigner | head -n 1) --verbose verify app/build/outputs/apk/release/app-release-signed.apk
           echo "Debug print files"
           find app/build/outputs/
       - name: Publish the apk to Dropbox
