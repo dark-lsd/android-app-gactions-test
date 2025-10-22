@@ -46,7 +46,7 @@ jobs:
       - name: Publish the apk to Dropbox
         shell: bash
         run: |
-          ls app/build/outputs/apk/release app/build/outputs/apk/debug -al
+          ls app/build/outputs/apk/release app/build/outputs/apk -al
           curl -X POST https://content.dropboxapi.com/2/files/upload \
             --header "Authorization: Bearer ${{ secrets.DROPBOX_ACCESS_TOKEN }}" \
             --header "Dropbox-API-Arg: {\"autorename\":false,\"mode\":\"overwrite\",\"mute\":false,\"path\":\"/ball-balancing-game.apk\",\"strict_conflict\":false}" \
