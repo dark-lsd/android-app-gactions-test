@@ -50,14 +50,15 @@ jobs:
         run: |
           echo "${{ secrets.KEYSTORE_JKS }}" | base64 --decode > keystore.jks
           echo "Signing the APK"
-          $(find $HOME/.android/sdk/build-tools -type f -name apksigner | head -n 1) \
+          echo "$ANDROID_SDK_ROOT"
+          $(find $ANDROID_SDK_ROOT/build-tools -type f -name apksigner | head -n 1) \
                     --ks keystore.jks \
                     --ks-key-alias "$KEYSTORE_ALIAS" \
                     --ks-pass "$KEYSTORE_PASSWD" \
                     --out app/build/outputs/apk/release/app-release-signed.apk 
                     app/build/outputs/apk/release/app-release-unsigned.apk
           echo "Verify the signed package"
-          $(find $HOME/.android/sdk/build-tools -type f -name apksigner | head -n 1) \
+          $(find $ANDROID_SDK_ROOT/build-tools -type f -name apksigner | head -n 1) \
                     --verbose \
                     verify \
                     app/build/outputs/apk/release/app-release-signed.apk
