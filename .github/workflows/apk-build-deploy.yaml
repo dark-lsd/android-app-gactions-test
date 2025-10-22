@@ -51,7 +51,7 @@ jobs:
           echo "${{ secrets.KEYSTORE_JKS }}" | base64 --decode > keystore.jks
           echo "Signing the APK"
           echo "$ANDROID_SDK_ROOT"
-          find $ANDROID_SDK_ROOT
+          find $ANDROID_SDK_ROOT/build-tools/
           $(find $ANDROID_SDK_ROOT/build-tools -type f -name apksigner | head -n 1) \
                     --ks keystore.jks \
                     --ks-key-alias "$KEYSTORE_ALIAS" \
